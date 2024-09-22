@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@200;300;400;500;600;700&display=swap");
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Open Sans", sans-serif;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            width: 100%;
+            padding: 0;
+            position: relative;
+            background: url("./Images/VetDoctor.jpg") no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        .profile-wrapper {
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .profile-card {
+            width: 100%;
+            max-width: 600px;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .profile-header {
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .profile-pic {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 5px solid #fff;
+            object-fit: cover;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .profile-pic:hover {
+            transform: scale(1.1);
+        }
+
+        .profile-header h2 {
+            font-size: 2.5rem;
+            color: #fff;
+            margin: 15px 0;
+        }
+
+        .profile-header p {
+            color: #ddd;
+            font-size: 1.2rem;
+            font-style: italic;
+        }
+
+        .profile-body {
+            color: #fff;
+        }
+
+        .profile-section {
+            margin-bottom: 25px;
+        }
+
+        .profile-section h3 {
+            font-size: 1.75rem;
+            margin-bottom: 15px;
+            color: #fff;
+            border-bottom: 2px solid #fff;
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+
+        .profile-section p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .work-section {
+            margin-bottom: 25px;
+        }
+
+        .work-section h3 {
+            font-size: 1.75rem;
+            margin-bottom: 15px;
+            color: #fff;
+            border-bottom: 2px solid #fff;
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+
+        .work-section ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .work-section li {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .work-section li span {
+            font-size: 1.1rem;
+            color: #fff;
+        }
+
+        .rating {
+            color: #ffdd57;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        button {
+            background: #fff;
+            color: #000;
+            font-weight: 600;
+            border: none;
+            padding: 14px 24px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            border: 2px solid transparent;
+            transition: 0.3s ease;
+        }
+
+        button:hover {
+            color: #fff;
+            border-color: #fff;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="profile-wrapper">
+        <div class="profile-card">
+            <div class="profile-header">
+                <img src="https://via.placeholder.com/150" alt="Profile Picture" class="profile-pic" id="profilePic">
+                <h2 id="profileName">John Doe</h2>
+                <p id="profileUsername">@johndoe</p>
+            </div>
+            <div class="profile-body">
+                <div class="profile-section">
+                    <h3>Education</h3>
+                    <p id="profileAbout">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum. Nullam luctus, urna ac ullamcorper.</p>
+                </div>
+                <div class="profile-section">
+                    <h3>Contact</h3>
+                    <p id="profileEmail">Email: johndoe@example.com</p>
+                    <p id="profilePhone">`</p>
+                </div>
+                <div class="work-section">
+                    <h3>My Work</h3>
+                    <ul id="workList">
+                        <!-- Work items will be populated here -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", async function() {
+            let Id = localStorage.getItem('doctorId');
+            console.log(Id);
+            localStorage.removeItem('doctorId');
+            let obj = {
+                doctorId: Id,
+                approved: false
+            };
+            let response = await fetch("/profile/doctor-profile", {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(obj)
+            });
+            let data = await response.json();
+            console.log(data);
+
+            // Update profile card with data
+            document.getElementById('profilePic').src = data.picture ? '/ProfilePics/'+ data.picture+'.jpg' : 'https://via.placeholder.com/150';
+            document.getElementById('profileName').textContent = data.name;
+            document.getElementById('profileUsername').textContent = '@' + data.name.toLowerCase().replace(/\s+/g, '');
+            document.getElementById('profileAbout').textContent = data.qualification;
+            document.getElementById('profileEmail').textContent = 'Email: ' + data.email;
+            document.getElementById('profilePhone').textContent = 'Phone: ' + data.phoneNumber;
+
+            let workList = document.getElementById('workList');
+            workList.innerHTML = ''; 
+            data.work.forEach(workItem => {
+                let listItem = document.createElement('li');
+                listItem.innerHTML = `<span>${workItem.title}</span><span class="rating">${workItem.rating}</span>`;
+                workList.appendChild(listItem);
+            });
+        });
+    </script>
+</body>
+</html>

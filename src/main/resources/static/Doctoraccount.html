@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KisanSathi</title>
+    <link rel="stylesheet" href="./Css/login.css">
+    <style>
+        /* Loader Styles */
+        .loader {
+            width: 48px;
+            height: 48px;
+            display: inline-block;
+            position: relative;
+            border: 3px solid;
+            border-color: #de3500 #0000 #fff #0000;
+            border-radius: 50%;
+            box-sizing: border-box;
+            animation: rotate 1s linear infinite;
+        }
+
+        .loader:before,
+        .loader:after {
+            content: '';
+            top: 0;
+            left: 0;
+            position: absolute;
+            border: 10px solid transparent;
+            border-bottom-color: #fff;
+            transform: translate(-10px, 19px) rotate(-35deg);
+        }
+
+        .loader:after {
+            border-color: #de3500 #0000 #0000 #0000;
+            transform: translate(32px, 3px) rotate(-35deg);
+        }
+
+        @keyframes rotate {
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Overlay Styles */
+        .overlay {
+            display: none;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999; /* Ensure it's on top of other elements */
+            align-items: center;
+            justify-content: center;
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <h2>Create Account</h2>
+    <form id="registerForm">
+        <!-- Form Fields -->
+        <div class="input-field">
+            <input type="text" required id="username" name="username">
+            <label for="username">Enter your email</label>
+        </div>
+        <div class="input-field">
+            <input type="password" required id="password" name="password">
+            <label for="password">Enter your password</label>
+        </div>
+        <div class="input-field">
+            <input type="text" required id="Name" name="Name">
+            <label for="Name">Enter your Name</label>
+        </div>
+        <div class="input-field">
+            <input type="text" required id="NationalIDNumber" name="NationalIDNumber">
+            <label for="NationalIDNumber">Enter your National Id number</label>
+        </div>
+        <div class="input-field">
+            <input type="number" required id="Number" name="Number">
+            <label for="Number">Enter a Number</label>
+        </div>
+        <div class="input-field">
+            <input type="text" required id="Qualification" name="Qualification">
+            <label for="Qualification">Enter your Qualification</label>
+        </div>
+        <div class="input-field-file">
+            <label for="pdfFile">Send Your Degree And National Id PDF</label>
+            <input type="file" id="pdfFile" name="pdfFile" accept="application/pdf" required>
+        </div>
+        <button type="submit">Create Account</button>
+    </form>
+    <div class="register">
+        <p>Already have an account? <a href="./login.html">Sign up</a></p>
+    </div>
+</div>
+
+<script>
+    document.getElementById('registerForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        // Create overlay and loader elements
+        const overlay = document.createElement('div');
+        overlay.className = 'overlay';
+        const loader = document.createElement('div');
+        loader.className = 'loader';
+        overlay.appendChild(loader);
+        document.body.appendChild(overlay);
+
+        // Show overlay and loader
+        overlay.style.display = 'flex';
+
+        const formData = new FormData();
+        formData.append('username', document.getElementById('username').value);
+        formData.append('Name', document.getElementById('Name').value);
+        formData.append('password', document.getElementById('password').value);
+        formData.append('NationalIDNumber', document.getElementById('NationalIDNumber').value);
+        formData.append('Number', document.getElementById('Number').value);
+        formData.append('Qualification', document.getElementById('Qualification').value);
+        const pdfFile = document.getElementById('pdfFile').files[0];
+        formData.append('pdfFile', pdfFile);
+
+        fetch('CreateAccount/Register', { 
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+            // Hide overlay
+            overlay.style.display = 'none';
+            document.body.removeChild(overlay);
+
+            if (data) {
+                window.location.href = '/login.html';
+            } else {
+                alert('Account creation failed');
+            }
+        })
+        .catch(error => {
+            // Hide overlay
+            overlay.style.display = 'none';
+            document.body.removeChild(overlay);
+            console.error('Error:', error);
+        });
+    });
+</script>
+</body>
+</html>

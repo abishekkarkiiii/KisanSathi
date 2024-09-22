@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KisanSathi</title>
+    <link rel="stylesheet" href="./Css/login.css">
+    <script src="./JS/Register.js" defer></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> <!-- Ensure this points to the correct JS file -->
+</head>
+<body>
+<div class="wrapper">
+    <h2>Create Account</h2>
+
+    <div class="input-field">
+        <input type="text" required id="name">
+        <label for="password">Enter your Name</label>
+    </div>
+   
+    <div class="input-field">
+        <input type="text" required id="username">
+        <label for="username">Enter your National Id Number</label>
+    </div>
+    
+    <div class="input-field">
+        <input type="password" required id="password">
+        <label for="password">Enter your password</label>
+    </div>
+
+    <div class="input-field">
+        <input type="number" required id="phonenumber">
+        <label for="password">Enter your Number</label>
+    </div>
+    <button onclick="CreateAccount()">Create Account</button>
+    <div class="register">
+        <p>Already have an account? <a href="./login.html">Sign up</a></p>
+    </div>
+</div>
+</body>
+</html>

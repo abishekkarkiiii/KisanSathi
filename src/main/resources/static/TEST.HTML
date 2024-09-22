@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Approve Doctors</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-image: url('./Images/Loginpic.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            height: 100vh;
+            backdrop-filter: blur(8px);
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        h1, h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: white;
+        }
+
+        .table {
+            margin-top: 20px;
+            width: 100%;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 12px 15px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        thead th {
+            background: rgba(255, 255, 255, 0.1);
+            font-size: 1rem;
+            color: white;
+        }
+
+        tbody td {
+            color: white;
+            font-size: 0.95rem;
+        }
+
+        .approve {
+            background-color: rgba(40, 167, 69, 0.7);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .approve:hover {
+            background-color: rgba(40, 167, 69, 1);
+        }
+
+        .reject {
+            background-color: rgba(220, 53, 69, 0.7);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .reject:hover {
+            background-color: rgba(220, 53, 69, 1);
+        }
+
+        table {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Loader styling */
+        .loader-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .loader {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: block;
+            border: 6px solid white;
+            border-top: 6px solid transparent;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Responsive styling */
+        @media (max-width: 768px) {
+            table {
+                font-size: 0.9rem;
+            }
+
+            .btn {
+                padding: 6px 10px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Loader Overlay -->
+    <div class="loader-overlay">
+        <div class="loader"></div>
+    </div>
+
+    <div class="container">
+        <h1>Admin Dashboard</h1>
+        <h2>Pending Doctor Approvals</h2>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover" id="doctorTable">
+                <thead class="table-dark">
+                    <tr>
+                        <th>SN</th>
+                        <th>Name</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Fetch email from localStorage (if applicable)
+            let obj = {
+                email: localStorage.getItem('email')
+            };
+
+            // Fetch pending work data (assuming backend returns an array of doctor objects)
+            $.post('/doctorwork/doctorPendingWork', obj, function (data) {
+                const tableBody = $('#doctorTable tbody');
+                tableBody.empty();
+
+                // Loop through data and append to the table
+                data.forEach(function (doctor, index) {
+                    let doctorInformation = doctor.split(",,");
+
+                    const row = `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${doctorInformation[1] || 'N/A'}</td>
+                            <td>
+                                <button class="btn btn-success approve" onclick="approveDoctor('${doctorInformation[0]}')">Accept</button>
+                                <button class="btn btn-danger reject" onclick="rejectDoctor('${doctorInformation[0]}')">Decline</button>
+                            </td>
+                        </tr>
+                    `;
+                    tableBody.append(row);
+                });
+            }).fail(function (error) {
+                console.log(error);
+            });
+        });
+
+        async function approveDoctor(index) {
+            showLoader(); // Show loader
+
+            let obj = {
+                email: localStorage.getItem('email'),
+                id: index,
+                doctorApproval: true
+            };
+
+            try {
+                let data = await Apicall(obj, '/doctorwork/contactFarmer');
+                console.log(data);
+                if (data) {
+                    console.log('Work completed');
+                }
+            } catch (error) {
+                console.log('Error:', error);
+            } finally {
+                hideLoader(); // Hide loader after completion
+            }
+        }
+
+        async function rejectDoctor(index) {
+            showLoader(); // Show loader
+
+            let obj = {
+                email: localStorage.getItem('email'),
+                id: index,
+                doctorApproval: false
+            };
+
+            try {
+                let data = await Apicall(obj, '/doctorwork/contactFarmer');
+                console.log(data);
+                if (data) {
+                    alert('Mail sent to your email');
+                }
+            } catch (error) {
+                alert('Mail sent to your email');
+                console.log('Error:', error);
+            } finally {
+                hideLoader(); // Hide loader after completion
+            }
+        }
+
+        async function Apicall(obj, url) {
+            return new Promise((resolve, reject) => {
+                $.post(url, obj, function (data) {
+                    resolve(data);
+                }).fail((error) => {
+                    reject(error);
+                });
+            });
+        }
+
+        // Function to show the loader
+        function showLoader() {
+            document.querySelector('.loader-overlay').style.display = 'flex';
+        }
+
+        // Function to hide the loader
+        function hideLoader() {
+            document.querySelector('.loader-overlay').style.display = 'none';
+        }
+    </script>
+</body>
+
+</html>
