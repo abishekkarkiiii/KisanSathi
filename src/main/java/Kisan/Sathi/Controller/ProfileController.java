@@ -1,9 +1,6 @@
 package Kisan.Sathi.Controller;
 
-import Kisan.Sathi.Entity.DataBus;
-import Kisan.Sathi.Entity.Profile;
-import Kisan.Sathi.Entity.ProfileBus;
-import Kisan.Sathi.Entity.ProfileDataUpdate;
+import Kisan.Sathi.Entity.*;
 import Kisan.Sathi.Model.ProfileModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +14,7 @@ public class ProfileController {
     ProfileModel profileModel;
     @PostMapping("/doctor-profile")
     public Profile viewProfile(@RequestBody DataBus data){
+        System.out.println(data);
          return profileModel.findprofile(data);
     }
 
@@ -28,8 +26,9 @@ public class ProfileController {
 
     @PostMapping("/profile-data")
     public  Profile updateProfile(@RequestBody ProfileBus profileBus){
-        System.out.println(profileBus+"adsadasdsadsadasdasda");
+
         if(profileModel.DecisionMake(profileBus).equals("Doctor")){
+            System.out.println(profileBus+"abishek");
             return  profileModel.DoctorProfileData(profileBus);
         }else {
 //            if(profileModel.DecisionMake(profileBus).equals("Farmer"))
@@ -53,6 +52,11 @@ public class ProfileController {
     }
 
 
+    @PostMapping("/recognize")
+    public ResponseEntity<?> profileRecognizer(@RequestBody ProfileBus profile ){
+        System.out.println("Hello World");
+        return ResponseEntity.ok(profileModel.ProfileChecker(profile));
+    }
 
 
 }

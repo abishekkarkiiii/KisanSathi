@@ -12,4 +12,5 @@ public class Profile {
     private String phoneNumber;
     private String qualification;
     private String picture;
+
 }

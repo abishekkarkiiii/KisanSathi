@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kisan Sathi - Connect Farmers to Markets</title>
+    <style>
+        :root {
+            --primary-color: #2e7d32;
+            --secondary-color: #f8b500;
+            --light-green: #a5d6a7;
+            --dark-green: #1b5e20;
+            --white: #ffffff;
+            --gray: #f5f5f5;
+            --dark-gray: #757575;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--gray);
+            overflow-x: hidden;
+        }
+
+        /* Mobile menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .logo-icon {
+            background-color: var(--secondary-color);
+            color: var(--dark-green);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background-color: var(--dark-green);
+        }
+
+        /* Banner */
+        .banner {
+            background: linear-gradient(rgba(46, 125, 50, 0.85), rgba(46, 125, 50, 0.85)), url('/api/placeholder/1200/300');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 30px 5%;
+            text-align: center;
+        }
+
+        .banner h1 {
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+
+        .banner p {
+            font-size: 16px;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Main Container */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 30px auto;
+            display: grid;
+            grid-template-columns: 1fr ;
+            gap: 30px;
+        }
+
+        /* Sections */
+        .upload-section {
+            background-color: var(--white);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            color: var(--dark-green);
+            margin-bottom: 20px;
+            font-size: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--light-green);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title-icon {
+            background-color: var(--light-green);
+            color: var(--dark-green);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Upload Form */
+        .upload-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-weight: 500;
+            color: var(--dark-gray);
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 15px;
+            width: 100%;
+        }
+
+        .upload-area {
+            border: 2px dashed var(--light-green);
+            border-radius: 4px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .upload-area:hover {
+            background-color: rgba(165, 214, 167, 0.1);
+        }
+
+        .upload-icon {
+            font-size: 36px;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .upload-text {
+            color: var(--dark-gray);
+            margin-bottom: 10px;
+        }
+
+        .upload-info {
+            font-size: 14px;
+            color: var(--dark-gray);
+        }
+
+        .upload-preview {
+            width: 100%;
+            max-height: 180px;
+            object-fit: contain;
+            margin-top: 20px;
+            display: none;
+            border-radius: 4px;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--white);
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--dark-green);
+        }
+
+
+
+        .filter-button {
+            padding: 6px 12px;
+            background-color: var(--gray);
+            border: none;
+            border-radius: A20px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .filter-button.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .filter-button:hover {
+            background-color: var(--light-green);
+        }
+
+   
+
+    
+
+      
+
+        .item-image-container {
+            position: relative;
+            height: 140px;
+            overflow: hidden;
+        }
+
+        .item-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+       
+
+        .item-category {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background-color: var(--secondary-color);
+            color: var(--dark-green);
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .item-details {
+            padding: 12px;
+            background-color: white;
+        }
+
+        .item-name {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 6px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .item-price {
+            color: var(--primary-color);
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 6px;
+        }
+
+        .item-quantity {
+            font-size: 12px;
+            color: var(--dark-gray);
+        }
+
+        .item-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 6px;
+            font-size: 12px;
+            color: var(--dark-gray);
+        }
+
+        .item-seller {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .item-contact {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            gap: 5px;
+        }
+
+        .contact-btn {
+            padding: 5px 8px;
+            background-color: var(--light-green);
+            color: var(--dark-green);
+            border: none;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .contact-btn:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        /* Success Message */
+        .success-message {
+            background-color: #e8f5e9;
+            color: var(--dark-green);
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 15px;
+            display: none;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .success-icon {
+            color: var(--primary-color);
+            font-size: 20px;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--dark-green);
+            color: white;
+            text-align: center;
+            padding: 20px 5%;
+            margin-top: 40px;
+        }
+
+        .footer-logo {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .footer-text {
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        /* Responsive Styles */
+        @media (min-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            
+            .upload-section {
+                padding: 30px;
+            }
+            
+            .banner h1 {
+                font-size: 36px;
+            }
+            
+            .banner p {
+                font-size: 18px;
+            }
+            
+            .section-title {
+                font-size: 24px;
+            }
+            
+          
+        }
+
+        @media (max-width: 767px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                flex-direction: column;
+                gap: 0;
+                background-color: var(--primary-color);
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                z-index: 100;
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .nav-links a {
+                padding: 15px;
+                border-radius: 0;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+            }
+            
+         
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 20px;
+            }
+            
+            .logo-icon {
+                width: 32px;
+                height: 32px;
+                font-size: 16px;
+            }
+            
+            .item-contact {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar">
+    <div class="logo">
+        <div class="logo-icon">🌾</div>
+        Kisan Sathi
+    </div>
+    <button class="mobile-menu-btn">☰</button>
+    <div class="nav-links">
+        <a href="#" class="active">Home</a>
+        <a href="#">Market</a>
+        <a href="#">My Products</a>
+        <a href="#">Help</a>
+    </div>
+</nav>
+
+<div class="banner">
+    <h1>Kisan Sathi - Empowering Farmers Directly</h1>
+    <p>Connect directly with buyers, get better prices, and grow your agricultural business with India's trusted farmer marketplace</p>
+</div>
+
+<div class="container">
+    <div class="upload-section">
+        <h2 class="section-title">
+            <span class="section-title-icon">📤</span>
+            Upload Your Product
+        </h2>
+        <form class="upload-form" id="productForm">
+            <div class="form-group">
+                <label for="productName">Product Name*</label>
+                <input type="text" id="productName" placeholder="Enter product name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="productPrice">Price (₹)*</label>
+                <input type="number" id="productPrice" placeholder="Enter price per unit" required>
+            </div>
+        
+            <div class="form-group">
+                <label for="productPrice">Minimum-Order</label>
+                <input type="number" id="minimumOrder" placeholder="Enter the Minimum-Order" required>
+            </div>
+            <div class="form-group">
+                <label for="productQuantity">Quantity Available</label>
+                <input type="number" id="productQuantity" placeholder="Enter available quantity">
+            </div>
+
+            <div class="form-group">
+                <label for="productCategory">Category</label>
+                <select id="productCategory">
+                    <option value="vegetables">Vegetables</option>
+                    <option value="fruits">Fruits</option>
+                    <option value="grains">Grains</option>
+                    <option value="pulses">Pulses</option>
+                    <option value="dairy">Dairy</option>
+                    <option value="spices">Spices</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="Unit">Units</label>
+                <select id="Unit">
+                    <option value="KG">KG</option>
+                    <option value="Liter">Liter</option>
+                </select>
+            </div>
+
+            <!-- <div class="form-group">
+                <label for="productDescription">Description</label>
+                <textarea id="productDescription" rows="3" placeholder="Describe your product"></textarea>
+            </div> -->
+
+            <div class="form-group">
+                <label>Product Image*</label>
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">📷</div>
+                    <div class="upload-text">Click or drag to upload product image</div>
+                    <div class="upload-info">Supported formats: JPG, PNG (Max size: 5MB)</div>
+                    <input type="file" id="productImage" accept="image/*" style="display: none;" required>
+                    <img id="imagePreview" class="upload-preview">
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">List Product for Sale</button>
+
+            <div class="success-message" id="successMessage">
+                <span class="success-icon">✅</span>
+                Your product has been successfully listed in the market!
+            </div>
+        </form>
+    </div>
+
+   
+</div>
+
+<footer class="footer">
+    <div class="footer-logo">
+        <div class="logo-icon">🌾</div>
+        Kisan Sathi
+    </div>
+    <p class="footer-text">
+        Empowering Indian farmers through direct market access.
+        Kisan Sathi connects farmers directly with buyers for better prices and sustainable agriculture.
+    </p>
+</footer>
+<script src="./JS/RegisterProduct.js"></script>
+</body>
+</html>

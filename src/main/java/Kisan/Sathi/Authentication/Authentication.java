@@ -21,7 +21,6 @@ public class Authentication implements AuthenticationProvider {
     @Override
     public org.springframework.security.core.Authentication authenticate(org.springframework.security.core.Authentication authentication) throws AuthenticationException {
         UserDetails user=userDetails.loadUserByUsername(authentication.getName());
-        System.out.println(user);
         if(passwordEncoder.matches((String)authentication.getCredentials(),user.getPassword())){
             return new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword(),user.getAuthorities());
         }else{

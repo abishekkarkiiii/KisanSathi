@@ -245,12 +245,11 @@
 
         document.getElementById("profile-form").addEventListener("submit", async function (event) {
             event.preventDefault();
-            
             const form = document.getElementById("profile-form");
             const formData = new FormData(form);
             formData.append("email",localStorage.getItem('email'))
             for (let pair of formData.entries()) {
-    console.log(pair[0]+ ': ' + pair[1]); 
+             console.log(pair[0]+ ': ' + pair[1]); 
 }
 
             const response = await fetch('profile/profile-update', {

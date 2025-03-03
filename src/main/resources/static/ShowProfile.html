@@ -208,7 +208,7 @@
             console.log(data);
 
             // Update profile card with data
-            document.getElementById('profilePic').src = data.picture ? '/ProfilePics/'+ data.picture+'.jpg' : 'https://via.placeholder.com/150';
+            document.getElementById('profilePic').src = data.picture ? '../ProfilePics/'+ data.picture+'.jpg' : 'https://via.placeholder.com/150';
             document.getElementById('profileName').textContent = data.name;
             document.getElementById('profileUsername').textContent = '@' + data.name.toLowerCase().replace(/\s+/g, '');
             document.getElementById('profileAbout').textContent = data.qualification;

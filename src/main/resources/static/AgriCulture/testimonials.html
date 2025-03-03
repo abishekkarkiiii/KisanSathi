@@ -44,20 +44,10 @@
           <li><a href="services.html">Our Services</a></li>
           <li class="dropdown"><a href="#"><span>Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
-              <li><a href="/DoctorApproval.html">DoctorApproval</a></li>
+              <li id="doctorApproval"><a href="/DoctorApproval.html">DoctorApproval</a></li>
               <li><a href="../profile.html">Update Profile</a></li>
-              <li class="dropdown">
-                <a href="#"><span>Deep Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-                <ul>
-                    <li><a href="/logout" class="logout-btn" style="color: red;">Log Out</a></li>
-                    <li><a href="#">Deep Dropdown 2</a></li>
-                    <li><a href="#">Deep Dropdown 3</a></li>
-                    <li><a href="#">Deep Dropdown 4</a></li>
-                    <li><a href="#">Deep Dropdown 5</a></li>
-                </ul>
-            </li>
-            
-              <li><a href="#">Dropdown 2</a></li>
+              <li><a href="/logout" class="logout-btn" style="color: red;">Log Out</a></li>
+              <li id="RegisterProfile"><a href="../RegisterProduct.html">Register Products</a></li>
               <li><a href="#">Dropdown 3</a></li>
               <li><a href="#">Dropdown 4</a></li>
             </ul>
@@ -220,8 +210,9 @@
   <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
   <!-- Preloader -->
   <div id="preloader"></div>
-
+   
   <!-- Vendor JS Files -->
+   <script src="../JS/Farmers.js"></script>
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="assets/vendor/php-email-form/validate.js"></script>
   <script src="assets/vendor/aos/aos.js"></script>
@@ -273,7 +264,6 @@
             alert(`Something is wrong`);
            }
             
-           
           });
     
           // Add event listeners to the "View Profile" buttons
@@ -292,3 +282,31 @@
 </body>
 
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

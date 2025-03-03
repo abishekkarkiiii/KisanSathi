@@ -2,7 +2,7 @@ package Kisan.Sathi.Model;
 
 import Kisan.Sathi.Entity.Doctor;
 import Kisan.Sathi.Entity.Doctorsrequest;
-import Kisan.Sathi.Entity.Farmers;
+import Kisan.Sathi.Entity.Users;
 import Kisan.Sathi.Repositries.DoctorRepo;
 import Kisan.Sathi.Repositries.DoctorRequestList;
 import Kisan.Sathi.Repositries.UsersAccount;
@@ -30,7 +30,7 @@ public class AccountModel {
     DoctorRequestList doctorRequestListInterface;
     @Autowired
     DoctorRepo doctorRepo;
-    public boolean createAccount(Farmers farmers){
+    public boolean createAccount(Users farmers){
         try {
            usersAccount.save(farmers);
            return true;
@@ -39,7 +39,7 @@ public class AccountModel {
         }
     }
 
-    public Farmers findUsers(String username){
+    public Users findUsers(String username){
           return usersAccount.findByusername(username);
     }
     public Doctor findDoctor(String email){
@@ -61,7 +61,7 @@ public class AccountModel {
             helper.setSubject("Doctor"+doctorsRequestList.getName()+" applied please verify from server");
             helper.setText("email: " + doctorsRequestList.getUsername());
             helper.addAttachment("DoctorRepo PDF", new ByteArrayDataSource(data, "application/pdf"));
-            FileOutputStream writer=new FileOutputStream("D:\\Sathi\\src\\main\\resources\\static\\DoctorPDF"+"\\"+ doctorsRequestList.getUsername()+".pdf");
+            FileOutputStream writer=new FileOutputStream("E:\\KisanSathi\\src\\main\\resources\\Approval"+"\\"+ doctorsRequestList.getUsername()+".pdf");
             writer.write(data);
             AccountSave(doctorsRequestList);
             mailSender.send(mimeMessage);

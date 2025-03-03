@@ -1,7 +1,7 @@
 package Kisan.Sathi.Controller;
 
 import Kisan.Sathi.Entity.Doctorsrequest;
-import Kisan.Sathi.Entity.Farmers;
+import Kisan.Sathi.Entity.Users;
 import Kisan.Sathi.Model.AccountModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,7 @@ public class RegisterAccount {
     @Autowired
     AccountModel accountModel;
     @PostMapping
-    public boolean CreateAccount(@RequestBody Farmers farmersData){
+    public boolean CreateAccount(@RequestBody Users farmersData){
         farmersData.setPassword(new BCryptPasswordEncoder().encode(farmersData.getPassword()));
        return accountModel.createAccount(farmersData);
 

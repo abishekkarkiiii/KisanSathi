@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>KisanSathi - Registration Portal</title>
+  <meta name="description" content="Register with KisanSathi as a farmer, doctor, or service provider">
+  <meta name="keywords" content="agriculture, farming, veterinary, registration, kisansathi">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap Icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary-color: #2e7d32;
+      --secondary-color: #4caf50;
+      --accent-color: #8bc34a;
+      --light-color: #f1f8e9;
+      --dark-color: #1b5e20;
+      --text-color: #333333;
+      --gray-100: #f5f5f5;
+      --gray-200: #eeeeee;
+      --gray-300: #e0e0e0;
+      --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Open Sans', sans-serif;
+      color: var(--text-color);
+      background-color: var(--gray-100);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+    }
+
+    a {
+      text-decoration: none;
+      color: var(--primary-color);
+      transition: var(--transition);
+    }
+
+    a:hover {
+      color: var(--dark-color);
+    }
+
+    /* Header styles */
+    .header {
+      background-color: white;
+      box-shadow: var(--shadow-md);
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+      position: relative;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo img {
+      height: 45px;
+      margin-right: 0.8rem;
+    }
+
+    .logo-text {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary-color);
+    }
+
+    .nav-menu {
+      display: flex;
+      list-style: none;
+    }
+
+    .nav-item {
+      margin-left: 1.5rem;
+    }
+
+    .nav-link {
+      color: var(--text-color);
+      font-weight: 500;
+      padding: 0.5rem;
+      position: relative;
+    }
+
+    .nav-link:hover {
+      color: var(--primary-color);
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: var(--primary-color);
+      transition: var(--transition);
+    }
+
+    .nav-link:hover::after,
+    .nav-link.active::after {
+      width: 100%;
+    }
+
+    .nav-link.active {
+      color: var(--primary-color);
+    }
+
+    .btn {
+      display: inline-block;
+      font-weight: 500;
+      text-align: center;
+      white-space: nowrap;
+      vertical-align: middle;
+      user-select: none;
+      border: 1px solid transparent;
+      padding: 0.625rem 1.25rem;
+      font-size: 1rem;
+      line-height: 1.5;
+      border-radius: var(--radius-md);
+      transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      color: #fff;
+      background-color: var(--primary-color);
+      border-color: var(--primary-color);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--dark-color);
+      border-color: var(--dark-color);
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-outline {
+      color: var(--primary-color);
+      background-color: transparent;
+      border-color: var(--primary-color);
+    }
+
+    .btn-outline:hover {
+      color: white;
+      background-color: var(--primary-color);
+    }
+
+    .hamburger {
+      display: none;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--text-color);
+    }
+
+    /* Language selector */
+    .language-selector {
+      position: relative;
+      margin-left: 1.5rem;
+    }
+
+    .language-selector select {
+      padding: 0.3rem 0.5rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--gray-300);
+      background-color: white;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    /* Main content styles */
+    .main-content {
+      margin-top: 84px;
+      padding: 4rem 0;
+      min-height: calc(100vh - 84px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-image: url('/api/placeholder/1920/600');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      position: relative;
+    }
+
+    .main-content::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.9), rgba(255,255,255,0.6));
+      z-index: 0;
+    }
+
+    .welcome-section {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      max-width: 800px;
+      margin-bottom: 3rem;
+    }
+
+    .welcome-heading {
+      font-size: 2.5rem;
+      color: var(--dark-color);
+      margin-bottom: 1rem;
+    }
+
+    .welcome-text {
+      font-size: 1.1rem;
+      color: var(--text-color);
+      margin-bottom: 2rem;
+    }
+
+    /* Registration cards section */
+    .registration-options {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      width: 100%;
+      max-width: 1200px;
+      padding: 0 1.5rem;
+    }
+
+    .registration-card {
+      background-color: white;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+      width: 350px;
+      transition: var(--transition);
+      position: relative;
+      z-index: 1;
+    }
+
+    .registration-card:hover {
+      transform: translateY(-10px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .card-header {
+      background-color: var(--primary-color);
+      padding: 1.5rem;
+      color: white;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 60%);
+      z-index: 0;
+    }
+
+    .card-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-title {
+      font-size: 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-content {
+      padding: 1.5rem;
+    }
+
+    .benefits-list {
+      list-style: none;
+      margin-bottom: 2rem;
+    }
+
+    .benefits-list li {
+      padding: 0.5rem 0;
+      display: flex;
+      align-items: flex-start;
+    }
+
+    .benefits-list i {
+      color: var(--accent-color);
+      margin-right: 0.75rem;
+      flex-shrink: 0;
+      margin-top: 0.2rem;
+    }
+
+    .card-footer {
+      padding: 1.5rem;
+      text-align: center;
+      border-top: 1px solid var(--gray-200);
+    }
+
+    .btn-block {
+      display: block;
+      width: 100%;
+    }
+
+    /* Footer styles */
+    .footer {
+      background-color: var(--dark-color);
+      color: white;
+      padding: 3rem 0 1.5rem 0;
+    }
+
+    .footer-content {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .footer-section {
+      flex: 1;
+      min-width: 250px;
+    }
+
+    .footer-logo {
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .footer-logo img {
+      height: 40px;
+    }
+
+    .footer-text {
+      margin-bottom: 1.5rem;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .footer-section h3 {
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+      position: relative;
+      padding-bottom: 0.5rem;
+    }
+
+    .footer-section h3::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 50px;
+      height: 2px;
+      background-color: var(--accent-color);
+    }
+
+    .contact-info {
+      list-style: none;
+    }
+
+    .contact-info li {
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: flex-start;
+    }
+
+    .contact-info i {
+      color: var(--accent-color);
+      margin-right: 0.75rem;
+      flex-shrink: 0;
+      margin-top: 0.2rem;
+    }
+
+    .footer-links {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 0.75rem;
+    }
+
+    .footer-links a {
+      color: rgba(255, 255, 255, 0.7);
+      transition: var(--transition);
+    }
+
+    .footer-links a:hover {
+      color: white;
+      padding-left: 0.5rem;
+    }
+
+    .social-icons {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .social-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
+      transition: var(--transition);
+    }
+
+    .social-icon:hover {
+      background-color: var(--accent-color);
+      color: white;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.9rem;
+    }
+
+    /* Responsive styles */
+    @media (max-width: 992px) {
+      .nav-menu {
+        position: fixed;
+        top: 84px;
+        left: -100%;
+        width: 100%;
+        padding: 1rem 0;
+        background-color: white;
+        box-shadow: var(--shadow-md);
+        flex-direction: column;
+        transition: 0.4s;
+        z-index: 999;
+      }
+
+      .nav-menu.active {
+        left: 0;
+      }
+
+      .nav-item {
+        margin: 0;
+        text-align: center;
+        padding: 0.75rem 0;
+      }
+
+      .hamburger {
+        display: block;
+      }
+
+      .btn-nav {
+        display: none;
+      }
+
+      .registration-card {
+        width: 100%;
+        max-width: 450px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 0.75rem 0;
+      }
+
+      .logo img {
+        height: 38px;
+      }
+
+      .logo-text {
+        font-size: 1.3rem;
+      }
+
+      .welcome-heading {
+        font-size: 2rem;
+      }
+
+      .main-content {
+        margin-top: 70px;
+        padding: 3rem 0;
+      }
+
+      .footer-section {
+        flex: 100%;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .container {
+        padding: 0 1rem;
+      }
+
+      .welcome-heading {
+        font-size: 1.75rem;
+      }
+
+      .welcome-text {
+        font-size: 1rem;
+      }
+
+      .registration-options {
+        gap: 1.5rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <nav class="navbar">
+        <a href="#" class="logo">
+          <img src="/api/placeholder/90/45" alt="KisanSathi Logo">
+          <span class="logo-text">KisanSathi</span>
+        </a>
+
+        <ul class="nav-menu">
+          <li class="nav-item">
+            <a href="#" class="nav-link active">Home</a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">About Us</a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">Services</a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">Contact</a>
+          </li>
+          <li class="nav-item">
+            <a href="login.html" class="btn btn-outline">Login</a>
+          </li>
+        </ul>
+
+        <!-- <div class="language-selector">
+          <select id="languageSelect">
+            <option value="en">English</option>
+            <option value="hi">हिन्दी</option>
+            <option value="pa">ਪੰਜਾਬੀ</option>
+            <option value="ta">தமிழ்</option>
+            <option value="te">తెలుగు</option>
+            <option value="mr">मराठी</option>
+          </select>
+        </div> -->
+
+        <button class="hamburger">
+          <i class="bi bi-list"></i>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <section class="welcome-section container">
+      <h1 class="welcome-heading">Join the KisanSathi Community</h1>
+      <p class="welcome-text">
+        KisanSathi brings together farmers, agricultural experts, and service providers to create a thriving ecosystem for sustainable farming. Select the registration option that best describes you to get started.
+      </p>
+    </section>
+
+    <section class="registration-options">
+      <!-- Farmer Registration Card -->
+      <div class="registration-card">
+        <div class="card-header">
+          <div class="card-icon">
+            <i class="bi bi-flower1"></i>
+          </div>
+          <h2 class="card-title">Register as a Farmer</h2>
+        </div>
+        <div class="card-content">
+          <ul class="benefits-list">
+            <li>
+              <i class="bi bi-check-circle"></i>
+              <span>Access expert agricultural advice and best practices</span>
+            </li>
+            <li>
+              <i class="bi bi-check-circle"></i>
+              <span>Get regular weather forecasts and alerts for your location</span>
+            </li>
+            <li>
+              <i class="bi bi-check-circle"></i>
+              <span>Connect with veterinary experts for livestock care</span>
+            </li>
+            <li>
+              <i class="bi bi-check-circle"></i>
+              <span>Receive market price updates and selling opportunities</span>
+            </li>
+            <li>
+              <i class="bi bi-check-circle"></i>
+              <span>Join a community of progressive farmers</span>
+            </li>
+          </ul>
+        </div>
+        <div class="card-footer">
+          <a href="farmer-registration.html" class="btn btn-primary btn-block">Register as Farmer</a>
+        </div>
+      </div>
+
+      <!-- Doctor Registration Card -->
+      <div class="registration-card">
+        <div class="card-header">
+          <div class="card-icon">
+            <i class="bi bi-heart-pulse"></i>
+          </div>
+          <h2 class="card-title">Register as a Doctor</h2>
+        </div>
+        <div class="card-content">
+          <ul class="benefits-list">
+            <li>
+              <i class="bi bi-check-circle"></i>
+              <span>Provide veterinary support to farmers in need</span>
+            </li>
+            <li>
+              <i class="bi bi-check-circle"></i>
+              <span>Expand your practice with telemedicine opportunities</span>
+            </li>
+            <li>
+              <i class="bi bi-check-circle"></i>
+              <span>Share your expertise through articles and webinars</span>
+            </li>
+            <li>
+              <i class="bi bi-check-circle"></i>
+              <span>Help farmers improve livestock health and productivity</span>
+            </li>
+            <li>
+              <i class="bi bi-check-circle"></i>
+              <span>Flexible scheduling and location-based assignments</span>
+            </li>
+          </ul>
+        </div>
+        <div class="card-footer">
+          <a href="doctor-registration.html" class="btn btn-primary btn-block">Register as Doctor</a>
+        </div>
+      </div>
+
+      <!-- Service Provider Registration Card -->
+      <div class="registration-card">
+        <div class="card-header">
+          <div class="card-icon">
+            <i class="bi bi-tools"></i>
+          </div>
+          <h2 class="card-title">Register as a Service Provider</h2>
+        </div>
+        <div class="card-content">
+          <ul class="benefits-list">
+            <li>
+              <i class="bi bi-check-circle"></i>
+              <span>Offer equipment rental services to local farmers</span>
+            </li>
+            <li>
+              <i class="bi bi-check-circle"></i>
+              <span>Provide transportation for agricultural products</span>
+            </li>
+            <li>
+              <i class="bi bi-check-circle"></i>
+              <span>Connect with farmers looking for specialized services</span>
+            </li>
+            <li>
+              <i class="bi bi-check-circle"></i>
+              <span>Expand your customer base and grow your business</span>
+            </li>
+            <li>
+              <i class="bi bi-check-circle"></i>
+              <span>Receive payments securely through the platform</span>
+            </li>
+          </ul>
+        </div>
+        <div class="card-footer">
+          <a href="service-provider-registration.html" class="btn btn-primary btn-block">Register as Service Provider</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <a href="#" class="footer-logo">
+            <img src="/api/placeholder/90/45" alt="KisanSathi Logo">
+          </a>
+          <p class="footer-text">
+            KisanSathi is dedicated to empowering farmers with technology and expert support for sustainable agriculture and improved livelihoods.
+          </p>
+          <div class="social-icons">
+            <a href="#" class="social-icon"><i class="bi bi-facebook"></i></a>
+            <a href="#" class="social-icon"><i class="bi bi-twitter"></i></a>
+            <a href="#" class="social-icon"><i class="bi bi-instagram"></i></a>
+            <a href="#" class="social-icon"><i class="bi bi-youtube"></i></a>
+            <a href="#" class="social-icon"><i class="bi bi-whatsapp"></i></a>
+          </div>
+        </div>
+
+        <div class="footer-section">
+          <h3>Contact Us</h3>
+          <ul class="contact-info">
+            <li>
+              <i class="bi bi-geo-alt"></i>
+              <span>123 Agricultural Complex, New Delhi, India</span>
+            </li>
+            <li>
+              <i class="bi bi-telephone"></i>
+              <span>+91 1800-123-4567</span>
+            </li>
+            <li>
+              <i class="bi bi-envelope"></i>
+              <span>info@kisansathi.com</span>
+            </li>
+            <li>
+              <i class="bi bi-clock"></i>
+              <span>Mon - Sat: 8:00 AM - 8:00 PM</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul class="footer-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Services</a></li>
+            <li><a href="#">Farmers' Corner</a></li>
+            <li><a href="#">Expert Connect</a></li>
+            <li><a href="#">Market Prices</a></li>
+            <li><a href="#">Contact Us</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h3>Newsletter</h3>
+          <p class="footer-text">Subscribe to our newsletter for farming tips, weather updates, and more.</p>
+          <form class="newsletter-form">
+            <input type="email" placeholder="Your Email Address" class="form-control" style="padding: 0.625rem; border-radius: var(--radius-md); margin-bottom: 1rem; width: 100%; border: none;">
+            <button type="submit" class="btn btn-primary btn-block">Subscribe</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2025 KisanSathi. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const hamburger = document.querySelector('.hamburger');
+      const navMenu = document.querySelector('.nav-menu');
+      
+      // Toggle mobile menu
+      hamburger.addEventListener('click', function() {
+        navMenu.classList.toggle('active');
+        const icon = hamburger.querySelector('i');
+        
+        if (navMenu.classList.contains('active')) {
+          icon.classList.remove('bi-list');
+          icon.classList.add('bi-x-lg');
+        } else {
+          icon.classList.remove('bi-x-lg');
+          icon.classList.add('bi-list');
+        }
+      });
+      
+      // Close mobile menu when a link is clicked
+      const navLinks = document.querySelectorAll('.nav-link');
+      navLinks.forEach(link => {
+        link.addEventListener('click', function() {
+          navMenu.classList.remove('active');
+          const icon = hamburger.querySelector('i');
+          icon.classList.remove('bi-x-lg');
+          icon.classList.add('bi-list');
+        });
+      });
+      
+      // Language selector functionality
+      document.getElementById('languageSelect').addEventListener('change', function() {
+        // This would typically change the language of the site
+        // For demo purposes, we'll just log it
+        console.log(`Language changed to: ${this.value}`);
+      });
+      
+      // Add scroll event to change header style
+      window.addEventListener('scroll', function() {
+        const header = document.querySelector('.header');
+        if (window.scrollY > 50) {
+          header.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
+          header.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+        } else {
+          header.style.backgroundColor = 'white';
+          header.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

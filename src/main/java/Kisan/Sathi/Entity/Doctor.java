@@ -35,5 +35,6 @@ public class Doctor {
     @DBRef
     List<Services>services=new ArrayList<>();
     private double PendingFees;
+    private String profileImage;
 
 }

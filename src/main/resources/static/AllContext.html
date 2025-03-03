@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kisan Sathi - Connect Farmers to Markets</title>
+    <style>
+        :root {
+            --primary-color: #2e7d32;
+            --secondary-color: #f8b500;
+            --light-green: #a5d6a7;
+            --dark-green: #1b5e20;
+            --white: #ffffff;
+            --gray: #f5f5f5;
+            --dark-gray: #757575;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--gray);
+        }
+
+        .navbar {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 15px 10%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .logo-icon {
+            background-color: var(--secondary-color);
+            color: var(--dark-green);
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-links a:hover {
+            background-color: var(--dark-green);
+        }
+
+        .banner {
+            background: linear-gradient(rgba(46, 125, 50, 0.85), rgba(46, 125, 50, 0.85)), url('/api/placeholder/1200/300');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 30px 10%;
+            text-align: center;
+        }
+
+        .banner h1 {
+            font-size: 36px;
+            margin-bottom: 15px;
+        }
+
+        .banner p {
+            font-size: 18px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 30px auto;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .upload-section {
+            background-color: var(--white);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            color: var(--dark-green);
+            margin-bottom: 20px;
+            font-size: 24px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--light-green);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title-icon {
+            background-color: var(--light-green);
+            color: var(--dark-green);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .upload-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-weight: 500;
+            color: var(--dark-gray);
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .upload-area {
+            border: 2px dashed var(--light-green);
+            border-radius: 4px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .upload-area:hover {
+            background-color: rgba(165, 214, 167, 0.1);
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .upload-text {
+            color: var(--dark-gray);
+            margin-bottom: 10px;
+        }
+
+        .upload-preview {
+            width: 100%;
+            max-height: 200px;
+            object-fit: contain;
+            margin-top: 20px;
+            display: none;
+            border-radius: 4px;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--dark-green);
+        }
+
+        .market-section {
+            background-color: var(--white);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .market-filter {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-button {
+            padding: 8px 16px;
+            background-color: var(--gray);
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .filter-button.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .filter-button:hover {
+            background-color: var(--light-green);
+        }
+
+        .market-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .market-item {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .market-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .item-image-container {
+            position: relative;
+            height: 160px;
+            overflow: hidden;
+        }
+
+        .item-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .market-item:hover .item-image {
+            transform: scale(1.05);
+        }
+
+        .item-category {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--secondary-color);
+            color: var(--dark-green);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .item-details {
+            padding: 15px;
+            background-color: white;
+        }
+
+        .item-name {
+            font-weight: 600;
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .item-price {
+            color: var(--primary-color);
+            font-weight: bold;
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .item-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+        }
+
+        .item-seller {
+            font-size: 13px;
+            color: var(--dark-gray);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .item-quantity {
+            font-size: 13px;
+            color: var(--dark-gray);
+        }
+
+        .item-contact {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 12px;
+        }
+
+        .contact-btn {
+            padding: 8px 12px;
+            background-color: var(--light-green);
+            color: var(--dark-green);
+            border: none;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .contact-btn:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .success-message {
+            background-color: #e8f5e9;
+            color: var(--dark-green);
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 20px;
+            display: none;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .success-icon {
+            color: var(--primary-color);
+            font-size: 20px;
+        }
+
+        .footer {
+            background-color: var(--dark-green);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
+        }
+
+        .footer-logo {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .footer-text {
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar">
+    <div class="logo">
+        <div class="logo-icon">🌾</div>
+        Kisan Sathi
+    </div>
+    <div class="nav-links">
+        <a href="#" class="active">Home</a>
+        <a href="#">Market</a>
+        <a href="#">My Products</a>
+    </div>
+</nav>
+
+<div class="banner">
+    <h1>Kisan Sathi - Empowering Farmers Directly</h1>
+    <p>Connect directly with buyers, get better prices, and grow your agricultural business with India's trusted farmer marketplace</p>
+</div>
+
+<div class="container">
+    <div class="upload-section">
+        <h2 class="section-title">
+            <span class="section-title-icon">📤</span>
+            Upload Your Product
+        </h2>
+        <form class="upload-form" id="productForm">
+            <div class="form-group">
+                <label for="productName">Product Name*</label>
+                <input type="text" id="productName" placeholder="Enter product name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="productPrice">Price (₹)*</label>
+                <input type="number" id="productPrice" placeholder="Enter price per unit" required>
+            </div>
+
+            <div class="form-group">
+                <label for="productQuantity">Quantity Available</label>
+                <input type="number" id="productQuantity" placeholder="Enter available quantity">
+            </div>
+
+            <div class="form-group">
+                <label for="productCategory">Category</label>
+                <select id="productCategory">
+                    <option value="">Select category</option>
+                    <option value="vegetables">Vegetables</option>
+                    <option value="fruits">Fruits</option>
+                    <option value="grains">Grains</option>
+                    <option value="pulses">Pulses</option>
+                    <option value="dairy">Dairy</option>
+                    <option value="spices">Spices</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="productDescription">Description</label>
+                <textarea id="productDescription" rows="3" placeholder="Describe your product"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Product Image*</label>
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">📷</div>
+                    <div class="upload-text">Click or drag to upload product image</div>
+                    <div class="upload-info">Supported formats: JPG, PNG (Max size: 5MB)</div>
+                    <input type="file" id="productImage" accept="image/*" style="display: none;" required>
+                    <img id="imagePreview" class="upload-preview">
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">List Product for Sale</button>
+
+            <div class="success-message" id="successMessage">
+                <span class="success-icon">✅</span>
+                Your product has been successfully listed in the market!
+            </div>
+        </form>
+    </div>
+
+    <div class="market-section">
+        <h2 class="section-title">
+            <span class="section-title-icon">🛒</span>
+            Current Market Listings
+        </h2>
+
+        <div class="market-filter">
+            <button class="filter-button active">All Products</button>
+            <button class="filter-button">Vegetables</button>
+            <button class="filter-button">Fruits</button>
+            <button class="filter-button">Grains</button>
+            <button class="filter-button">Dairy</button>
+            <button class="filter-button">Spices</button>
+        </div>
+
+        <div class="market-items">
+            <div class="market-item">
+                <div class="item-image-container">
+                    <img src="/api/placeholder/300/200" alt="Tomatoes" class="item-image">
+                    <div class="item-category">Vegetables</div>
+                </div>
+                <div class="item-details">
+                    <div class="item-name">Premium Tomatoes</div>
+                    <div class="item-price">₹25/kg</div>
+                    <div class="item-quantity">Available: 50 kg</div>
+                    <div class="item-meta">
+                        <div class="item-seller">
+                            <span>👨‍🌾</span> Ramesh Kumar
+                        </div>
+                        <div>Nashik, MH</div>
+                    </div>
+                    <div class="item-contact">
+                        <button class="contact-btn">
+                            <span>📞</span> Contact
+                        </button>
+                        <button class="contact-btn">
+                            <span>🛒</span> Buy Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="market-item">
+                <div class="item-image-container">
+                    <img src="/api/placeholder/300/200" alt="Potatoes" class="item-image">
+                    <div class="item-category">Vegetables</div>
+                </div>
+                <div class="item-details">
+                    <div class="item-name">Fresh Potatoes</div>
+                    <div class="item-price">₹20/kg</div>
+                    <div class="item-quantity">Available: 100 kg</div>
+                    <div class="item-meta">
+                        <div class="item-seller">
+                            <span>👨‍🌾</span> Suresh Patel
+                        </div>
+                        <div>Agra, UP</div>
+                    </div>
+                    <div class="item-contact">
+                        <button class="contact-btn">
+                            <span>📞</span> Contact
+                        </button>
+                        <button class="contact-btn">
+                            <span>🛒</span> Buy Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="market-item">
+                <div class="item-image-container">
+                    <img src="/api/placeholder/300/200" alt="Basmati Rice" class="item-image">
+                    <div class="item-category">Grains</div>
+                </div>
+                <div class="item-details">
+                    <div class="item-name">Premium Basmati Rice</div>
+                    <div class="item-price">₹80/kg</div>
+                    <div class="item-quantity">Available: 200 kg</div>
+                    <div class="item-meta">
+                        <div class="item-seller">
+                            <span>👨‍🌾</span> Harpreet Singh
+                        </div>
+                        <div>Amritsar, PB</div>
+                    </div>
+                    <div class="item-contact">
+                        <button class="contact-btn">
+                            <span>📞</span> Contact
+                        </button>
+                        <button class="contact-btn">
+                            <span>🛒</span> Buy Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="market-item">
+                <div class="item-image-container">
+                    <img src="/api/placeholder/300/200" alt="Alphonso Mangoes" class="item-image">
+                    <div class="item-category">Fruits</div>
+                </div>
+                <div class="item-details">
+                    <div class="item-name">Alphonso Mangoes</div>
+                    <div class="item-price">₹350/dozen</div>
+                    <div class="item-quantity">Available: 50 dozen</div>
+                    <div class="item-meta">
+                        <div class="item-seller">
+                            <span>👨‍🌾</span> Rajesh Patil
+                        </div>
+                        <div>Ratnagiri, MH</div>
+                    </div>
+                    <div class="item-contact">
+                        <button class="contact-btn">
+                            <span>📞</span> Contact
+                        </button>
+                        <button class="contact-btn">
+                            <span>🛒</span> Buy Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="market-item">
+                <div class="item-image-container">
+                    <img src="/api/placeholder/300/200" alt="Organic Turmeric" class="item-image">
+                    <div class="item-category">Spices</div>
+                </div>
+                <div class="item-details">
+                    <div class="item-name">Organic Turmeric</div>
+                    <div class="item-price">₹200/kg</div>
+                    <div class="item-quantity">Available: 30 kg</div>
+                    <div class="item-meta">
+                        <div class="item-seller">
+                            <span>👨‍🌾</span> Laxmi Devi
+                        </div>
+                        <div>Erode, TN</div>
+                    </div>
+                    <div class="item-contact">
+                        <button class="contact-btn">
+                            <span>📞</span> Contact
+                        </button>
+                        <button class="contact-btn">
+                            <span>🛒</span> Buy Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="market-item">
+                <div class="item-image-container">
+                    <img src="/api/placeholder/300/200" alt="Farm Fresh Milk" class="item-image">
+                    <div class="item-category">Dairy</div>
+                </div>
+                <div class="item-details">
+                    <div class="item-name">Farm Fresh Milk</div>
+                    <div class="item-price">₹60/liter</div>
+                    <div class="item-quantity">Available: 100 liters</div>
+                    <div class="item-meta">
+                        <div class="item-seller">
+                            <span>👨‍🌾</span> Mohan Yadav
+                        </div>
+                        <div>Anand, GJ</div>
+                    </div>
+                    <div class="item-contact">
+                        <button class="contact-btn">
+                            <span>📞</span> Contact
+                        </button>
+                        <button class="contact-btn">
+                            <span>🛒</span> Buy Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="footer-logo">
+        <div class="logo-icon">🌾</div>
+        Kisan Sathi
+    </div>
+    <p class="footer-text">
+        Empowering Indian farmers through direct market access.
+        Kisan Sathi connects farmers directly with buyers for better prices and sustainable agriculture.
+    </p>
+</footer>
+
+<script>
+    // Handle image upload preview
+    const uploadArea = document.getElementById('uploadArea');
+    const fileInput = document.getElementById('productImage');
+    const imagePreview = document.getElementById('imagePreview');
+    const productForm = document.getElementById('productForm');
+    const successMessage = document.getElementById('successMessage');
+
+    uploadArea.addEventListener('click', () => {
+        fileInput.click();
+    });
+
+    uploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadArea.style.backgroundColor = 'rgba(165, 214, 167, 0.2)';
+    });
+
+    uploadArea.addEventListener('dragleave', () => {
+        uploadArea.style.backgroundColor = '';
+    });
+
+    uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadArea.style.backgroundColor = '';
+
+        if (e.dataTransfer.files.length) {
+            fileInput.files = e.dataTransfer.files;
+            displayPreview(e.dataTransfer.files[0]);
+        }
+    });
+
+    fileInput.addEventListener('change', () => {
+        if (fileInput.files.length) {
+            displayPreview(fileInput.files[0]);
+        }
+    });
+
+    function displayPreview(file) {
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+            imagePreview.src = e.target.result;
+            imagePreview.style.display = 'block';
+        };
+
+        reader.readAsDataURL(file);
+    }
+
+    // Form submission
+    productForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        // Check required fields
+        const productName = document.getElementById('productName').value;
+        const productPrice = document.getElementById('productPrice').value;
+
+        if (!productName || !productPrice || !fileInput.files.length) {
+            alert('Please fill all required fields and upload an image');
+            return;
+        }
+
+        // Show success message (in a real app, this would be after API submission)
+        successMessage.style.display = 'flex';
+
+        // Add the new product to the market items (for demo purposes)
+        setTimeout(() => {
+            const marketItems = document.querySelector('.market-items');
+            const newItem = document.createElement('div');
+            newItem.className = 'market-item';
+
+            const category = document.getElementById('productCategory').value || 'Other';
+            const quantity = document.getElementById('productQuantity').value || '1';
+
+            newItem.innerHTML = `
+                <div class="item-image-container">
+                    <img src="${imagePreview.src}" alt="${productName}" class="item-image">
+                    <div class="item-category">${category}</div>
+                </div>
+                <div class="item-details">
+                    <div class="item-name">${productName}</div>
+                    <div class="item-price">₹${productPrice}</div>
+                    <div class="item-quantity">Available: ${quantity} units</div>
+                    <div class="item-meta">
+                        <div class="item-seller">
+                            <span>👨‍🌾</span> You
+                        </div>
+                        <div>Your Location</div>
+                    </div>
+                    <div class="item-contact">
+                        <button class="contact-btn">
+                            <span>📞</span> Contact
+                        </button>
+                        <button class="contact-btn">
+                            <span>🛒</span> Buy Now
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            marketItems.prepend(newItem);
+
+            // Reset form
+            productForm.reset();
+            imagePreview.style.display = 'none';
+            successMessage.style.display = 'none';
+        }, 2000);
+    });
+
+    // Filter buttons
+    const filterButtons = document.querySelectorAll('.filter-button');
+
+    filterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            // Remove active class from all buttons
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+
+            // Add active class to clicked button
+            button.classList.add('active');
+
+            // In a real app, this would filter the products
+        });
+    });
+</script>
+</body>
+</html>
